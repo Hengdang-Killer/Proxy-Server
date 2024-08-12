@@ -1,29 +1,13 @@
-<h1>Multi Threaded Proxy Server with and without Cache</h1>
+<h1>Multi Threaded Proxy Server with Cache</h1>
 
 This project is implemented using `C` and Parsing of HTTP referred from <a href = "https://github.com/vaibhavnaagar/proxy-server"> Proxy Server </a>
 
-
-## Index
-
-- [Project Theory](https://github.com/Hengdang-Killer/Proxy-Server#project-theory)
-- [How to Run](https://github.com/Hengdang-Killer/Proxy-Server#How-to-Run)
-- [Demo](https://github.com/Hengdang-Killer/Proxy-Server#Demo)
-- [Contributing](https://github.com/Hengdang-Killer/Proxy-Server#contributing)
-
 ## Project Theory
-
-[[Back to top]](https://github.com/Lovepreet-Singh-LPSK/MultiThreadedProxyServerClient#index)
-
-##### Introduction
-
-##### Basic Working Flow of the Proxy Server:
-![](https://github.com/Lovepreet-Singh-LPSK/MultiThreadedProxyServerClient/blob/main/pics/UML.JPG)
 
 ##### How did we implement Multi-threading?
 - Used Semaphore instead of Condition Variables and pthread_join() and pthread_exit() function. 
 - pthread_join() requires us to pass the thread id of the the thread to wait for. 
 - Semaphore’s sem_wait() and sem_post() doesn’t need any parameter. So it is a better option. 
-
 
 ##### Motivation/Need of Project
 - To Understand → 
@@ -51,8 +35,6 @@ This project is implemented using `C` and Parsing of HTTP referred from <a href 
 - This code can be implemented using multiprocessing that can speed up the process with parallelism.
 - We can decide which type of websites should be allowed by extending the code.
 - We can implement requests like POST with this code.
-
-
 
 ## How to Run
 
