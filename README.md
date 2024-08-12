@@ -55,10 +55,3 @@ $ ./proxy <port no.>
 - When website is opened for the first time (`url not found`) then cache will be miss.
 - Then if you again open that website again then `Data is retrieved from the cache` will be printed.
 
-## Contributing
-
-[[Back to top]](https://github.com/Hengdang-Killer/Proxy-Server#index)
-
-Feel free to add some useful. You can see `How this code can be extended`. Use ideas from there and feel free to fork and CHANGE. 
-
-#### Enjoy CODE and pull requests are highly appreciated.
