@@ -19,90 +19,70 @@
 
 #define DEBUG 1
 
-/* 
-   ParsedRequest objects are created from parsing a buffer containing a HTTP
-   request. The request buffer consists of a request line followed by a number
-   of headers. Request line fields such as method, protocol etc. are stored
-   explicitly. Headers such as 'Content-Length' and their values are maintained
-   in a linked list. Each node in this list is a ParsedHeader and contains a
-   key-value pair.
-
-   The buf and buflen fields are used internally to maintain the parsed request
-   line.
- */
+// This defines the ParsedRequest structure, which holds the parsed elements of an HTTP request
 struct ParsedRequest {
-     char *method; 
-     char *protocol; 
-     char *host; 
-     char *port; 
-     char *path;
-     char *version;
-     char *buf;
-     size_t buflen;
-     struct ParsedHeader *headers;
-     size_t headersused;
-     size_t headerslen;
+     char *method; // HTTP method (e.g., GET, POST).
+     char *protocol; // The protocol used (e.g., http).
+     char *host; // The host address (e.g., www.example.com).
+     char *port; // The port number (e.g., 80).
+     char *path; // The requested path (e.g., /index.html).
+     char *version; // The HTTP version (e.g., HTTP/1.1).
+     char *buf; // The buffer that holds the request data.
+     size_t buflen; // The length of the buffer.
+     struct ParsedHeader *headers; // A linked list of headers, where each header is a key-value pair.
+     size_t headersused; // The number of headers currently stored.
+     size_t headerslen; // The maximum number of headers that can be stored.
 };
 
-/* 
-   ParsedHeader: any header after the request line is a key-value pair with the
-   format "key:value\r\n" and is maintained in the ParsedHeader linked list
-   within ParsedRequest
-*/
+// This defines the ParsedHeader structure, which holds a single header from an HTTP request
 struct ParsedHeader {
-     char * key;
-     size_t keylen;
-     char * value;
-     size_t valuelen;
+     char * key; // The header's key (e.g., Content-Length).
+     size_t keylen; // The length of the key.
+     char * value; // The header's value (e.g., 80 for Content-Length).
+     size_t valuelen; // The length of the value.
 };
 
-
-/* Create an empty parsing object to be used exactly once for parsing a single
- * request buffer */
+// Declares a function ParsedRequest_create that returns a pointer to a ParsedRequest structure. 
+// This function will create and initialize an empty ParsedRequest object.
 struct ParsedRequest* ParsedRequest_create();
 
-/* Parse the request buffer in buf given that buf is of length buflen */
+// Declares a function ParsedRequest_parse that takes a pointer to a ParsedRequest, a request buffer (buf), and its length (buflen). 
+// It parses the request buffer and stores the parsed data in the ParsedRequest object.
 int ParsedRequest_parse(struct ParsedRequest * parse, const char *buf,
 			int buflen);
 
-/* Destroy the parsing object. */
+// Declares a function ParsedRequest_destroy that takes a pointer to a ParsedRequest and frees any memory dynamically allocated for it.
 void ParsedRequest_destroy(struct ParsedRequest *pr);
 
-/* 
-   Retrieve the entire buffer from a parsed request object. buf must be an
-   allocated buffer of size buflen, with enough space to write the request
-   line, headers and the trailing \r\n. buf will not be NUL terminated by
-   unparse().
- */
+// Declares a function ParsedRequest_unparse that takes a ParsedRequest and an allocated buffer (buf). 
+// It writes the entire HTTP request (request line and headers) to this buffer.
 int ParsedRequest_unparse(struct ParsedRequest *pr, char *buf, 
 			  size_t buflen);
 
-/* 
-   Retrieve the entire buffer with the exception of request line from a parsed
-   request object. buf must be an allocated buffer of size buflen, with enough
-   space to write the headers and the trailing \r\n. buf will not be NUL
-   terminated by unparse(). If there are no headers, the trailing \r\n is
-   unparsed.
- */
+// Declares a function ParsedRequest_unparse_headers that writes only the headers (not the request line) from the ParsedRequest object to the provided buffer.
 int ParsedRequest_unparse_headers(struct ParsedRequest *pr, char *buf, 
 				  size_t buflen);
 
-/* Total length including request line, headers and the trailing \r\n*/
+// Declares a function ParsedRequest_totalLen that returns the total length of the parsed HTTP request, including the request line, headers, and trailing \r\n.
 size_t ParsedRequest_totalLen(struct ParsedRequest *pr);
 
-/* Length including headers, if any, and the trailing \r\n but excluding the
- * request line. 
- */
+// Declares a function ParsedHeader_headersLen that returns the length of the headers (excluding the request line) in the parsed request, including the trailing \r\n.
 size_t ParsedHeader_headersLen(struct ParsedRequest *pr);
 
-/* Set, get, and remove null-terminated header keys and values */
+// Declares a function ParsedHeader_set that sets the value of a specific header in the parsed request. 
+// It takes the ParsedRequest, a header key, and its associated value.
 int ParsedHeader_set(struct ParsedRequest *pr, const char * key, 
 		      const char * value);
+
+// Declares a function ParsedHeader_get that retrieves a header by its key from the parsed request and returns a pointer to the corresponding ParsedHeader structure.
 struct ParsedHeader* ParsedHeader_get(struct ParsedRequest *pr, 
 				      const char * key);
+
+// Declares a function ParsedHeader_remove that removes a header by its key from the parsed request.
 int ParsedHeader_remove (struct ParsedRequest *pr, const char * key);
 
-/* debug() prints out debugging info if DEBUG is set to 1 */
+// Declares a debug function that takes a format string and a variable number of arguments. 
+// If DEBUG is set to 1, this function prints debugging information to standard output.
 void debug(const char * format, ...);
 
 /* Example usage:
