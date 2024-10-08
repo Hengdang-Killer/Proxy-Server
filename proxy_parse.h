@@ -9,8 +9,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdarg.h>
-#include <errno.h>
+#include <stdarg.h>      // For handling functions with a variable number of arguments
+#include <errno.h>       // For error reporting
 
 #include <ctype.h>
 
